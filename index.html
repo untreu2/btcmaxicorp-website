@@ -98,7 +98,7 @@
         try {
           const response = await fetch('https://blockstream.info/api/blocks/tip/height');
           const blockHeight = await response.text();
-          const formattedBlockHeight = parseInt(blockHeight).toLocaleString('en-US');
+          const formattedBlockHeight = parseInt(blockHeight).toLocaleString('en-US').replace(",", "");
           document.getElementById('blockInfo').textContent = formattedBlockHeight;
         } catch (error) {
           document.getElementById('blockInfo').textContent = 'Error loading block info';
