@@ -12,14 +12,19 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        flex-direction: column;
         font-family: Arial, sans-serif;
-        background: url("./images/bg.jpg") no-repeat center center fixed;
+        background: linear-gradient(
+            rgba(0, 0, 0, 0.5),
+            rgba(0, 0, 0, 0.7)
+          ),
+          url("./images/bg.jpg") no-repeat center center fixed;
         background-size: cover;
+        color: #dad4d4;
       }
 
       .center-div {
         text-align: center;
-
         padding: 20px;
         border-radius: 10px;
       }
@@ -33,6 +38,35 @@
       .center-div img {
         width: 70px;
         height: 70px;
+        animation: spin 10s linear infinite;
+      }
+
+      .block-info {
+        font-size: 0.9rem;
+        margin-top: 20px;
+        color: #dad4d4;
+      }
+
+      .source-code-link {
+        font-size: 0.85rem;
+        margin-top: 20px;
+        color: #dad4d4;
+        text-decoration: none;
+        display: block;
+      }
+
+      .source-code-link:hover {
+        text-decoration: underline;
+        color: #ffffff;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
 
       @media (max-width: 600px) {
@@ -55,6 +89,26 @@
         CORP
       </h1>
       <img src="./images/btc.svg" />
+      <div class="block-info" id="blockInfo">Loading...</div>
+      <a href="https://github.com/btcmaxicorp" target="_blank" class="source-code-link">Source code on GitHub</a>
     </div>
+
+    <script>
+      async function fetchBlockInfo() {
+        try {
+          const response = await fetch('https://blockstream.info/api/blocks/tip/height');
+          const blockHeight = await response.text();
+          const formattedBlockHeight = parseInt(blockHeight).toLocaleString('en-US');
+          document.getElementById('blockInfo').textContent = formattedBlockHeight;
+        } catch (error) {
+          document.getElementById('blockInfo').textContent = 'Error loading block info';
+          console.error('Error fetching block data:', error);
+        }
+      }
+
+      fetchBlockInfo();
+
+      setInterval(fetchBlockInfo, 60000);
+    </script>
   </body>
 </html>
